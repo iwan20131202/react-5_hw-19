@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { Item, Image } from "./ImageGalleryItem.styled.js";
 
 export const ImageGalleryItem = memo(({ image, onImageClick }) => {

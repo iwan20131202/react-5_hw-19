@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isVisibleLoadMore, setIsVisibleLoadMore] = useState(false);
 
   useEffect(() => {
     if (!query) return;
@@ -25,9 +26,11 @@ function App() {
         setIsLoading(true);
         setError(null);
 
-        const newImages = await api.fetchImages(query, page);
+        const response = await api.fetchImages(query, page);
+        const newImages = Array.isArray(response) ? response : response.hits;
 
         setImages((prev) => (page === 1 ? newImages : [...prev, ...newImages]));
+        setIsVisibleLoadMore(newImages.length >= 12);
       } catch (error) {
         setError(error);
       } finally {
@@ -38,10 +41,11 @@ function App() {
     fetchData();
   }, [query, page]);
 
-  const handleSearch = useCallback((query) => {
-    setQuery(query);
+  const handleSearch = useCallback((newQuery) => {
+    setQuery(newQuery);
     setImages([]);
     setPage(1);
+    setIsVisibleLoadMore(false);
   }, []);
 
   const handleLoadMore = useCallback(() => {
@@ -66,13 +70,15 @@ function App() {
 
       {error && <ErrorText>Error: {error.message}</ErrorText>}
 
-      {isLoading && <Loader />}
-
       {isEmpty && <EmptyText>No found results!</EmptyText>}
 
-      <ImageGallery images={images} onImageClick={openModal} />
+      {images.length > 0 && (
+        <ImageGallery images={images} onImageClick={openModal} />
+      )}
 
-      {images.length > 0 && <Button onClick={handleLoadMore} />}
+      {isLoading && <Loader />}
+
+      {isVisibleLoadMore && !isLoading && <Button onClick={handleLoadMore} />}
 
       {selectedImage && (
         <Modal

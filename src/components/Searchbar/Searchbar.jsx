@@ -1,15 +1,13 @@
 import { useState, useCallback } from "react";
-
 import { IoSearchOutline } from "react-icons/io5";
-
 import { Header, Form, SearchBox, Input, Button } from "./Searchbar.styled.js";
 
 export const Searchbar = ({ onSubmit }) => {
   const [query, setQuery] = useState("");
 
-  const handleChange = useCallback((event) => {
+  const handleChange = (event) => {
     setQuery(event.target.value);
-  }, []);
+  };
 
   const handleSubmit = useCallback(
     (event) => {
@@ -20,7 +18,7 @@ export const Searchbar = ({ onSubmit }) => {
       onSubmit(query.trim());
       setQuery("");
     },
-    [query, onSubmit],
+    [query, onSubmit]
   );
 
   return (

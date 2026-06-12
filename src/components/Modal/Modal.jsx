@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from "react";
-
 import { Overlay, Image } from "./Modal.styled.js";
 
 export const Modal = ({ largeImageURL, tags, onClose }) => {
@@ -9,7 +8,7 @@ export const Modal = ({ largeImageURL, tags, onClose }) => {
         onClose();
       }
     },
-    [onClose],
+    [onClose]
   );
 
   useEffect(() => {

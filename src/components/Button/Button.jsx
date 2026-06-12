@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { LoadMoreButton } from "./Button.styled.js";
 
 export const Button = memo(({ onClick }) => {
